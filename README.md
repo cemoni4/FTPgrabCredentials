@@ -1,50 +1,51 @@
-# FTPgrabCredentials
-This Python script is designed to monitor and analyze FTP traffic, specifically focusing on capturing FTP credentials (username and password) sent in clear text. The script uses NetfilterQueue to capture network packets and Scapy for packet parsing. It detects FTP commands and responses, then extracts sensitive information, such as the username and password, when applicable.
-# FTP Sniffer for Username and Password Extraction 🐍🔍
+# FTP Credential Sniffer Tool 🛡️
 
-This Python script captures and analyzes FTP packets, extracting **username** and **password** information from FTP login attempts. It uses **NetfilterQueue** to monitor network traffic and **Scapy** for packet parsing.
+## Description 📘
+This project is a Python script that uses `netfilterqueue` and `scapy` to capture and analyze FTP traffic. It extracts and prints FTP credentials (username and password) when users attempt to log in.
 
-## Features ✨
-- **FTP Traffic Analysis**: Captures FTP packets and analyzes commands like `USER` and `PASS`.
-- **Credential Extraction**: Prints the username and password when a successful login (`230` response) is detected.
-- **Real-Time Monitoring**: Uses **NetfilterQueue** to capture and analyze network traffic in real time.
+## Features ⚡
+- **FTP Packet Interception**: Captures FTP traffic using a Netfilter queue.
+- **Credential Logging**: Extracts and prints usernames and passwords sent over FTP.
+- **Real-Time Monitoring**: Continuously monitors packets and displays results live.
 
-## Requirements ⚙️
+## Requirements 🛠️
+- Python 3
+- Libraries:
+  - `netfilterqueue`
+  - `scapy`
 
-Before running the script, ensure you have the following Python packages installed:
-
-- `scapy`
-- `netfilterqueue`
-
-To install the required packages, run the following command:
-
+Install the required libraries with:
 ```bash
-pip install scapy netfilterqueue
-⚠️ Note: The script requires root privileges to capture network traffic.
+pip install netfilterqueue scapy
+```
 
-Usage 🚀
-Run the script with root privileges to start monitoring FTP traffic:
+## Firewall Configuration 🔥
+To make the script work, you need to set up an iptables rule to forward traffic to the Netfilter queue:
+```bash
+iptables -I FORWARD -j NFQUEUE --queue-num 1
+```
 
-bash
-Copia
-Modifica
+For local testing:
+```bash
+iptables -I OUTPUT -j NFQUEUE --queue-num 1
+iptables -I INPUT -j NFQUEUE --queue-num 1
+```
+
+After running the script, you can reset the rules with:
+```bash
+iptables --flush
+```
+
+## Execution ▶️
+Run the script with:
+```bash
 sudo python3 ftp_sniffer.py
-The script will capture FTP packets and display the following:
+```
 
-Username and password when a successful login is detected (230 response).
-Stop the script by pressing Ctrl+C.
+## Warning ⚠️
+Running this script requires superuser privileges and modifies firewall rules. FTP transmits credentials in plaintext, so this tool demonstrates how attackers can intercept sensitive data. Use responsibly and only in controlled environments for educational or testing purposes!
 
-Example Output 📊
-Captured FTP Credentials: When a successful login is detected, the script will print the username and password:
+## License 📄
+Distributed under the MIT License.
 
-bash
-Copia
-Modifica
-USER : user123
-PASS : password456
-License 📜
-This project is licensed under the MIT License.
-Modifica
-Form found: Username: ['user123'] Password: ['password456']
-License 📜
-This project is licensed under the MIT License.
+---
