@@ -39,7 +39,7 @@ iptables --flush
 ## Execution ▶️
 Run the script with:
 ```bash
-sudo python3 ftp_sniffer.py
+sudo python3 FTP.py
 ```
 
 ## Warning ⚠️
